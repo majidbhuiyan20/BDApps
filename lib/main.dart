@@ -1,21 +1,24 @@
-import 'package:bdapps/features/home/view/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'features/home/view/home_screen.dart';
 
 void main() {
-  runApp( MyApp());
+  runApp(const MyPortfolioApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyPortfolioApp extends StatelessWidget {
+  const MyPortfolioApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'BDApps',
+      debugShowCheckedModeBanner: false,
+      title: 'Personal Profile',
       theme: ThemeData(
-
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+        colorSchemeSeed: Colors.blueAccent,
+        brightness: Brightness.light,
       ),
-      home: HomeScreen()
+      home: const HomeScreen(),
     );
   }
 }
