@@ -1,5 +1,6 @@
+import 'package:bdapps/QuizApp/quiz_app_home.dart';
+import 'package:bdapps/portfolio/view/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'features/home/view/home_screen.dart';
 
 void main() {
   runApp(const MyPortfolioApp());
@@ -18,7 +19,7 @@ class MyPortfolioApp extends StatelessWidget {
         colorSchemeSeed: Colors.blueAccent,
         brightness: Brightness.light,
       ),
-      home: const HomeScreen(),
+      home:  QuizAppHome(),
     );
   }
 }
