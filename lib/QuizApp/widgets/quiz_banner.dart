@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
+import '../views/quiz_page.dart';
+
 class QuizBanner extends StatefulWidget {
   const QuizBanner({super.key});
 
@@ -133,7 +135,9 @@ class _QuizBannerState extends State<QuizBanner> with SingleTickerProviderStateM
                         Material(
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> QuizPage()));
+                            },
                             borderRadius: BorderRadius.circular(14),
                             child: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),

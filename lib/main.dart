@@ -1,6 +1,5 @@
-import 'package:bdapps/QuizApp/quiz_app_home.dart';
-import 'package:bdapps/portfolio/view/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'QuizApp/views/quiz_app_home.dart';
 
 void main() {
   runApp(const MyPortfolioApp());

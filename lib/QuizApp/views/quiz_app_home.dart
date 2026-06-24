@@ -2,7 +2,7 @@ import 'package:bdapps/QuizApp/widgets/category_card.dart';
 import 'package:bdapps/QuizApp/widgets/recent_card.dart';
 import 'package:bdapps/QuizApp/widgets/title_section.dart';
 import 'package:flutter/material.dart';
-import 'widgets/quiz_banner.dart';
+import '../widgets/quiz_banner.dart';
 
 class QuizAppHome extends StatefulWidget {
   const QuizAppHome({super.key});
