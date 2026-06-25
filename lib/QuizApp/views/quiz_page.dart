@@ -3,6 +3,9 @@ import 'package:bdapps/QuizApp/widgets/question_card.dart';
 import 'package:bdapps/QuizApp/widgets/quiz_progress.dart';
 import 'package:flutter/material.dart';
 
+import '../model/quiz_ques_model.dart';
+import '../utils/numeric_serial_to_abc.dart';
+
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key});
 
@@ -11,14 +14,29 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  QuizQuestion questionData = QuizQuestion(
+    id: 1,
+    question: "Which of the following is not a programming language?",
+    options: ["Majid", "Toma", "Python", "Bhuiyan"],
+    answerIndex: 2,
+  );
+  void setAnswer(int index) {
+    if (selectedAnswerIndex == index) {
+      selectedAnswerIndex = null;
+    } else {
+      selectedAnswerIndex = index;
+    }
+    setState(() {});
+  }
+
+  int? selectedAnswerIndex;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Quiz App"),
-      ),
+      appBar: AppBar(title: const Text("Quiz App")),
       body: Padding(
-        padding:  EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           spacing: 22,
           children: [
@@ -26,25 +44,47 @@ class _QuizPageState extends State<QuizPage> {
             Column(
               spacing: 12,
               children: [
-                QuestionCard(question: "Which of the following is not a programming language?",),
-                AnswerOption(option: 'Majid', serial: 'a', isSelected: false,),
-                AnswerOption(option: 'Toma', serial: 'b', isSelected: false,),
-                AnswerOption(option: 'Python', serial: 'c', isSelected: true,),
-                AnswerOption(option: 'Bhuiyan', serial: 'd', isSelected: false,),
+                QuestionCard(question: questionData.question),
+                Column(
+                  spacing: 12,
+                  children: List.generate(
+                    questionData.options.length,
+                    (index) => AnswerOption(
+                      option: questionData.options[index],
+                      serial: numericSerialToABC(index),
+                      isSelected: index == selectedAnswerIndex,
+                      onTap: () => setAnswer(index),
+                    ),
+                  ),
+                ),
               ],
             ),
             Expanded(child: SizedBox()),
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: ElevatedButton(
-                  style:ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(Color(0Xff2200a6)),
-                    fixedSize: MaterialStatePropertyAll(Size(double.maxFinite, 56)),
-                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Color(0Xff2200a6)),
+                  fixedSize: MaterialStatePropertyAll(
+                    Size(double.maxFinite, 56),
                   ),
+                  shape: MaterialStatePropertyAll(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
 
-                  onPressed: (){},
-                  child: Text("Next", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),)),
+                onPressed: () {},
+                child: Text(
+                  "Next",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -52,5 +92,3 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 }
-
-

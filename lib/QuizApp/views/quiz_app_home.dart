@@ -1,3 +1,4 @@
+import 'package:bdapps/QuizApp/model/quiz_ques_model.dart';
 import 'package:bdapps/QuizApp/widgets/category_card.dart';
 import 'package:bdapps/QuizApp/widgets/recent_card.dart';
 import 'package:bdapps/QuizApp/widgets/title_section.dart';
@@ -12,7 +13,8 @@ class QuizAppHome extends StatefulWidget {
 }
 
 class _QuizAppHomeState extends State<QuizAppHome> {
-  @override
+
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
