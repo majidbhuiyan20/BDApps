@@ -14,6 +14,14 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  int? selectedAnswerIndex;
+  bool correctAnswer = false;
+  bool showCorrectAnswer = false;
+  bool answerSubmitted = false;
+  int obtainedMark = 0;
+  int progress = 0;
+
+
   QuizQuestion questionData = QuizQuestion(
     id: 1,
     question: "Which of the following is not a programming language?",
@@ -29,7 +37,43 @@ class _QuizPageState extends State<QuizPage> {
     setState(() {});
   }
 
-  int? selectedAnswerIndex;
+
+
+  void submitAnswer(){
+    //todo: selectedAnswerIndex != null
+    if(selectedAnswerIndex == null){
+      return;
+    }
+    //todo: check isSelectedAnswer == questionData.answerIndex
+    correctAnswer = (selectedAnswerIndex == questionData.answerIndex);
+    //todo: If incorrect show correct answer
+    showCorrectAnswer = true;
+    answerSubmitted = true;
+    //todo: if Correct mark++
+    obtainedMark = obtainedMark + questionData.mark!;
+    //todo: update progress
+    progress++;
+    setState(() {
+
+    });
+    
+
+  }
+  void prepareNextQuestion(){
+    questionData = QuizQuestion(
+      id: 2,
+      question: "What is the national flower of Bangladesh",
+      options: ["Rose", "Lily", "Toma", "Lotus"],
+      answerIndex: 1,
+    );
+     correctAnswer = false;
+     showCorrectAnswer = false;
+     answerSubmitted = false;
+     setState(() {
+
+     });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +84,7 @@ class _QuizPageState extends State<QuizPage> {
         child: Column(
           spacing: 22,
           children: [
-            QuizProgress(),
+            QuizProgress(currentProgress: progress+1, totalCount: 5 ,),
             Column(
               spacing: 12,
               children: [
@@ -49,17 +93,24 @@ class _QuizPageState extends State<QuizPage> {
                   spacing: 12,
                   children: List.generate(
                     questionData.options.length,
-                    (index) => AnswerOption(
-                      option: questionData.options[index],
-                      serial: numericSerialToABC(index),
-                      isSelected: index == selectedAnswerIndex,
-                      onTap: () => setAnswer(index),
+                    (currentIndex) => AnswerOption(
+                      option: questionData.options[currentIndex],
+                      serial: numericSerialToABC(currentIndex),
+                      isSelected: currentIndex == selectedAnswerIndex,
+                      onTap:answerSubmitted? null : () => setAnswer(currentIndex),
+                      showCorrectAnswer: questionData.answerIndex == currentIndex && showCorrectAnswer,
                     ),
                   ),
                 ),
               ],
             ),
             Expanded(child: SizedBox()),
+            if(answerSubmitted)
+              Text(correctAnswer ? "Correct Answer" : "Incorrect Answer", style: TextStyle(
+              color: correctAnswer ? Colors.green : Colors.red,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),),
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: ElevatedButton(
@@ -75,9 +126,10 @@ class _QuizPageState extends State<QuizPage> {
                   ),
                 ),
 
-                onPressed: () {},
+                onPressed: answerSubmitted ? prepareNextQuestion :  submitAnswer,
                 child: Text(
-                  "Next",
+                  answerSubmitted ?
+                  "Next" : "Submit",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

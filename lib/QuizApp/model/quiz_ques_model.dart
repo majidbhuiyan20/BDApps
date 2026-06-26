@@ -3,13 +3,13 @@ class QuizQuestion{
   String question;
   List<String> options;
   int answerIndex;
-  int? mark  = 10;
+  int mark;
 
   QuizQuestion({
     required this.id,
     required this.question,
     required this.options,
     required this.answerIndex,
-    this.mark,
+    this.mark = 10,
   });
 }

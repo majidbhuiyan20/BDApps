@@ -1,12 +1,11 @@
+import 'package:bdapps/QuizApp/widgets/quiz_timer.dart';
 import 'package:flutter/material.dart';
-class QuizProgress extends StatefulWidget {
-  const QuizProgress({super.key});
 
-  @override
-  State<QuizProgress> createState() => _QuizProgressState();
-}
+class QuizProgress extends StatelessWidget {
+  const QuizProgress({super.key, required this.currentProgress, required this.totalCount});
+  final int currentProgress;
+  final int totalCount;
 
-class _QuizProgressState extends State<QuizProgress> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,34 +17,36 @@ class _QuizProgressState extends State<QuizProgress> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Question", style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),),
+                const Text(
+                  "Question",
+                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
+                ),
                 Row(
                   children: [
-                    Text("6", style: TextStyle(fontSize: 26, color: Colors.pinkAccent, fontWeight: FontWeight.bold),),
-                    Text("/20", style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),),
+                    Text(
+                      currentProgress.toString(),
+                      style: const TextStyle(
+                          fontSize: 26,
+                          color: Colors.pinkAccent,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "/$totalCount",
+                      style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                    ),
                   ],
                 ),
               ],
             ),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                SizedBox(
-                  width: 56,
-                  height: 56,
-                  child: CircularProgressIndicator(
-                    value: 0.5,
-
-                    backgroundColor: Colors.grey[300],
-                  ),
-                ),
-                Text("00:25", style: TextStyle( fontSize: 14 ),)
-              ],
-            )
+            QuizTimer()
           ],
         ),
-        LinearProgressIndicator(value: 6 / 20,)
+        LinearProgressIndicator(
+          value: totalCount > 0 ? currentProgress / totalCount : 0,
+        )
       ],
     );
   }
 }
+
+

@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AnswerOption extends StatelessWidget {
-  const AnswerOption({super.key, required this.option, required this.serial, required this.isSelected, this.onTap});
+  const AnswerOption({super.key, required this.option, required this.serial, required this.isSelected, this.onTap, this.showCorrectAnswer = false});
   final String option;
   final String serial;
   final bool isSelected;
+  final bool showCorrectAnswer;
+
   final void Function()? onTap;
 
 
@@ -16,10 +18,10 @@ class AnswerOption extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isSelected ? Color(0Xffe2dff2): Color(0Xfff5f5f5),
+          color:showCorrectAnswer?Colors.green.shade50 :  isSelected ? Color(0Xffe2dff2): Color(0Xfff5f5f5),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? Color(0Xff3e2788) : Colors.transparent,
+            color:showCorrectAnswer?Colors.green.shade800 :  isSelected ? Color(0Xff3e2788) : Colors.transparent,
             width: 1
           ),
         ),
