@@ -4,6 +4,7 @@ import 'package:bdapps/QuizApp/widgets/answer_option.dart';
 import 'package:bdapps/QuizApp/widgets/question_card.dart';
 import 'package:bdapps/QuizApp/widgets/quiz_progress.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/computer_question.dart';
 import '../data/math_question.dart';
@@ -35,18 +36,20 @@ class _QuizPageState extends State<QuizPage> {
     }
     setState(() {});
   }
-  void submitAnswer(){
-    //todo: selectedAnswerIndex != null
+  Future<void> submitAnswer() async {
     if(selectedAnswerIndex == null){
       return;
     }
-    //todo: check isSelectedAnswer == questionData.answerIndex
     correctAnswer = (selectedAnswerIndex == questions[progress].answerIndex);
-    //todo: If incorrect show correct answer
     showCorrectAnswer = true;
     answerSubmitted = true;
-    //todo: if Correct mark++
-    obtainedMark = obtainedMark + questions[progress].mark!;
+    if(correctAnswer){
+      obtainedMark = obtainedMark + questions[progress].mark!;
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      int currentTotalScore  = pref.getInt("score") ?? 0;
+      pref.setInt("score", currentTotalScore + questions[progress].mark );
+
+    }
     setState(() {
 
     });
@@ -118,7 +121,13 @@ class _QuizPageState extends State<QuizPage> {
           ),),
         ),
       )],),
-      body: Padding(
+      body:questions.isEmpty ? Center(child:Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.warning_amber_outlined, size: 100,), 
+          Text("No Question Found", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)
+        ],
+      ),) : Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           spacing: 22,
