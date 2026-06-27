@@ -136,7 +136,7 @@ class _QuizBannerState extends State<QuizBanner> with SingleTickerProviderStateM
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> QuizPage()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> QuizPage(category: 'Math',)));
                             },
                             borderRadius: BorderRadius.circular(14),
                             child: Container(

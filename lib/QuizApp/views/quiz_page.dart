@@ -3,11 +3,13 @@ import 'package:bdapps/QuizApp/widgets/question_card.dart';
 import 'package:bdapps/QuizApp/widgets/quiz_progress.dart';
 import 'package:flutter/material.dart';
 
+import '../data/math_question.dart';
 import '../model/quiz_ques_model.dart';
 import '../utils/numeric_serial_to_abc.dart';
 
 class QuizPage extends StatefulWidget {
-  const QuizPage({super.key});
+  const QuizPage({super.key, required this.category});
+  final String category;
 
   @override
   State<QuizPage> createState() => _QuizPageState();
@@ -21,13 +23,7 @@ class _QuizPageState extends State<QuizPage> {
   int obtainedMark = 0;
   int progress = 0;
 
-
-  QuizQuestion questionData = QuizQuestion(
-    id: 1,
-    question: "Which of the following is not a programming language?",
-    options: ["Majid", "Toma", "Python", "Bhuiyan"],
-    answerIndex: 2,
-  );
+  List<QuizQuestion> questions = [];
   void setAnswer(int index) {
     if (selectedAnswerIndex == index) {
       selectedAnswerIndex = null;
@@ -36,23 +32,18 @@ class _QuizPageState extends State<QuizPage> {
     }
     setState(() {});
   }
-
-
-
   void submitAnswer(){
     //todo: selectedAnswerIndex != null
     if(selectedAnswerIndex == null){
       return;
     }
     //todo: check isSelectedAnswer == questionData.answerIndex
-    correctAnswer = (selectedAnswerIndex == questionData.answerIndex);
+    correctAnswer = (selectedAnswerIndex == questions[progress].answerIndex);
     //todo: If incorrect show correct answer
     showCorrectAnswer = true;
     answerSubmitted = true;
     //todo: if Correct mark++
-    obtainedMark = obtainedMark + questionData.mark!;
-    //todo: update progress
-    progress++;
+    obtainedMark = obtainedMark + questions[progress].mark!;
     setState(() {
 
     });
@@ -60,45 +51,78 @@ class _QuizPageState extends State<QuizPage> {
 
   }
   void prepareNextQuestion(){
-    questionData = QuizQuestion(
-      id: 2,
-      question: "What is the national flower of Bangladesh",
-      options: ["Rose", "Lily", "Toma", "Lotus"],
-      answerIndex: 1,
-    );
      correctAnswer = false;
+     selectedAnswerIndex = null;
      showCorrectAnswer = false;
      answerSubmitted = false;
      setState(() {
 
      });
+     if(progress < questions.length)
+     {
+       progress++;
+     }
+     else{
+       print("All Questions is completed");
+     }
   }
 
-
+  void loadAllQuestionsOfThisCategory(){
+    setState(() {
+      questions = List<QuizQuestion>.from(mathQuestions)..shuffle();
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadAllQuestionsOfThisCategory();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Quiz App")),
+      appBar: AppBar(
+        centerTitle: false,
+        title: Text("${widget.category} Quiz"), actions: [Padding(
+        padding: const EdgeInsets.only(right: 12.0),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+          decoration: BoxDecoration(
+            color: Color(0Xfff6f4fc),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: Color(0Xff2200a6),
+              width: 1
+            )
+          ),
+          child: Text("Score: ${obtainedMark.toString()}", style: TextStyle(
+            color: Color(0Xff2200a6),
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),),
+        ),
+      )],),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           spacing: 22,
           children: [
-            QuizProgress(currentProgress: progress+1, totalCount: 5 ,),
+            QuizProgress(currentProgress: progress+1, totalCount: questions.length ,),
             Column(
               spacing: 12,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                QuestionCard(question: questionData.question),
+                QuestionCard(question: questions[progress].question),
                 Column(
                   spacing: 12,
                   children: List.generate(
-                    questionData.options.length,
+                    questions[progress].options.length,
                     (currentIndex) => AnswerOption(
-                      option: questionData.options[currentIndex],
+                      option: questions[progress].options[currentIndex],
                       serial: numericSerialToABC(currentIndex),
                       isSelected: currentIndex == selectedAnswerIndex,
                       onTap:answerSubmitted? null : () => setAnswer(currentIndex),
-                      showCorrectAnswer: questionData.answerIndex == currentIndex && showCorrectAnswer,
+                      showCorrectAnswer: questions[progress].answerIndex == currentIndex && showCorrectAnswer,
                     ),
                   ),
                 ),

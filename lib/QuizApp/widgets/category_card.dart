@@ -1,21 +1,24 @@
+import 'package:bdapps/QuizApp/views/quiz_page.dart';
 import 'package:flutter/material.dart';
+
+import '../views/quiz_app_home.dart';
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard({
     super.key,
     required this.title,
     required this.imageFileName,
-    required this.onTap,
   });
 
   final String title;
   final String imageFileName;
-  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: (){
+         Navigator.push(context, MaterialPageRoute(builder: (context)=> QuizPage(category: title,)));
+      },
       child: Container(
         height: 120,
         width: 180,

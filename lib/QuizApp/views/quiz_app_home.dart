@@ -75,10 +75,10 @@ class _QuizAppHomeState extends State<QuizAppHome> {
                    child: Row(
                      spacing: 16,
                      children: [
-                       CategoryCard(title: "Math", imageFileName: "math.png", onTap: (){}),
-                       CategoryCard(title: "Chemistry", imageFileName: "chemistry.png", onTap: (){}),
-                       CategoryCard(title: "Biology", imageFileName: "biology.png", onTap: (){}),
-                       CategoryCard(title: "Computer", imageFileName: "computer.png", onTap: (){}),
+                       CategoryCard(title: "Math", imageFileName: "math.png"),
+                       CategoryCard(title: "Chemistry", imageFileName: "chemistry.png"),
+                       CategoryCard(title: "Biology", imageFileName: "biology.png"),
+                       CategoryCard(title: "Computer", imageFileName: "computer.png"),
                      ],
                    ),
                  ),
