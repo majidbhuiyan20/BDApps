@@ -1,8 +1,11 @@
+import 'package:bdapps/QuizApp/data/biology_question.dart';
+import 'package:bdapps/QuizApp/data/chemistry_question.dart';
 import 'package:bdapps/QuizApp/widgets/answer_option.dart';
 import 'package:bdapps/QuizApp/widgets/question_card.dart';
 import 'package:bdapps/QuizApp/widgets/quiz_progress.dart';
 import 'package:flutter/material.dart';
 
+import '../data/computer_question.dart';
 import '../data/math_question.dart';
 import '../model/quiz_ques_model.dart';
 import '../utils/numeric_serial_to_abc.dart';
@@ -68,8 +71,21 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void loadAllQuestionsOfThisCategory(){
+    List<QuizQuestion> allQuestionOfThisCategory = [];
+    if(widget.category == "Math"){
+      allQuestionOfThisCategory = mathQuestions;
+    }
+    else if(widget.category == "Chemistry"){
+      allQuestionOfThisCategory = chemistryQuestions;
+    }
+    else if(widget.category == "Biology"){
+      allQuestionOfThisCategory = biologyQuestions;
+    }
+    else if(widget.category == "Computer"){
+      allQuestionOfThisCategory = computerQuestions;
+    }
     setState(() {
-      questions = List<QuizQuestion>.from(mathQuestions)..shuffle();
+      questions = List<QuizQuestion>.from(allQuestionOfThisCategory)..shuffle();
     });
   }
   @override
