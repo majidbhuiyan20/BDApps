@@ -1,3 +1,4 @@
+import 'package:bdapps/QuizApp/service/user_data.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,7 +30,7 @@ class HomePageHeader extends StatelessWidget  {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Hi, Majid B.', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16,),),
+              Text('Hi, ${UserData.userName}', style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16,),),
               Text('Flutter Developer', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black26.withOpacity(0.5)),)
             ],
           ),
