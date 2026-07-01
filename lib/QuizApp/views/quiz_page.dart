@@ -44,11 +44,11 @@ class _QuizPageState extends State<QuizPage> {
     showCorrectAnswer = true;
     answerSubmitted = true;
     if(correctAnswer){
-      obtainedMark = obtainedMark + questions[progress].mark!;
+      int markToAdd = questions[progress].mark ?? 0;
+      obtainedMark = obtainedMark + markToAdd;
       SharedPreferences pref = await SharedPreferences.getInstance();
       int currentTotalScore  = pref.getInt("score") ?? 0;
-      pref.setInt("score", currentTotalScore + questions[progress].mark );
-
+      await pref.setInt("score", currentTotalScore + markToAdd);
     }
     setState(() {
 
@@ -57,19 +57,32 @@ class _QuizPageState extends State<QuizPage> {
 
   }
   void prepareNextQuestion(){
-     correctAnswer = false;
-     selectedAnswerIndex = null;
-     showCorrectAnswer = false;
-     answerSubmitted = false;
-     setState(() {
-
-     });
-     if(progress < questions.length)
+     if(progress < questions.length - 1)
      {
-       progress++;
+       setState(() {
+         progress++;
+         correctAnswer = false;
+         selectedAnswerIndex = null;
+         showCorrectAnswer = false;
+         answerSubmitted = false;
+       });
      }
      else{
-       print("All Questions is completed");
+       // Handle completion
+       showDialog(
+         context: context,
+         builder: (context) => AlertDialog(
+           title: const Text("Quiz Completed!"),
+           content: Text("Your score: $obtainedMark"),
+           actions: [
+             TextButton(
+               onPressed: () => Navigator.pop(context),
+               child: const Text("OK"),
+             )
+           ],
+         )
+       );
+       print("All Questions completed");
      }
   }
 
@@ -93,7 +106,6 @@ class _QuizPageState extends State<QuizPage> {
   }
   @override
   void initState() {
-    // TODO: implement initState
     loadAllQuestionsOfThisCategory();
     super.initState();
   }
@@ -105,30 +117,30 @@ class _QuizPageState extends State<QuizPage> {
         title: Text("${widget.category} Quiz"), actions: [Padding(
         padding: const EdgeInsets.only(right: 12.0),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
           decoration: BoxDecoration(
-            color: Color(0Xfff6f4fc),
+            color: const Color(0Xfff6f4fc),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: Color(0Xff2200a6),
+              color: const Color(0Xff2200a6),
               width: 1
             )
           ),
-          child: Text("Score: ${obtainedMark.toString()}", style: TextStyle(
+          child: Text("Score: ${obtainedMark.toString()}", style: const TextStyle(
             color: Color(0Xff2200a6),
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),),
         ),
       )],),
-      body:questions.isEmpty ? Center(child:Column(
+      body:questions.isEmpty ? const Center(child:Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.warning_amber_outlined, size: 100,), 
           Text("No Question Found", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)
         ],
       ),) : Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           spacing: 22,
           children: [
@@ -153,7 +165,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ],
             ),
-            Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox()),
             if(answerSubmitted)
               Text(correctAnswer ? "Correct Answer" : "Incorrect Answer", style: TextStyle(
               color: correctAnswer ? Colors.green : Colors.red,
@@ -164,8 +176,8 @@ class _QuizPageState extends State<QuizPage> {
               padding: const EdgeInsets.only(bottom: 8.0),
               child: ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Color(0Xff2200a6)),
-                  fixedSize: MaterialStatePropertyAll(
+                  backgroundColor: const MaterialStatePropertyAll(Color(0Xff2200a6)),
+                  fixedSize: const MaterialStatePropertyAll(
                     Size(double.maxFinite, 56),
                   ),
                   shape: MaterialStatePropertyAll(
@@ -179,7 +191,7 @@ class _QuizPageState extends State<QuizPage> {
                 child: Text(
                   answerSubmitted ?
                   "Next" : "Submit",
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,

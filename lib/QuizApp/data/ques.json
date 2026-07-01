@@ -1,0 +1,13 @@
+[
+  {
+    "id": 1,
+    "question": "What is the square root of 144?",
+    "options": [
+      "10",
+      "11",
+      "12",
+      "14"
+    ],
+    "answerIndex": 2
+  }
+]

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/home_page_header.dart';
 import '../widgets/quiz_banner.dart';
+import 'add_question.dart';
 
 class QuizAppHome extends StatefulWidget {
   const QuizAppHome({super.key});
@@ -67,6 +68,10 @@ class _QuizAppHomeState extends State<QuizAppHome> {
                 RecentCard(title: "English", questionCount: 43, isComplete: false,),
                 const SizedBox(height: 16),
                 RecentCard(title: "Bangla", questionCount: 32, isComplete: true),
+                const SizedBox(height: 16),
+                ElevatedButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const AddQuestion()));
+                }, child: Text("Add More  Question"))
               ],
             )
           )
